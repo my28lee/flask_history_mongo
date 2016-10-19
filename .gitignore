@@ -1,0 +1,9 @@
+.idea/
+venv/
+svn-*
+local_*
+study.txt
+*.pyc
+config.ini
+database.db
+app/static/libs/

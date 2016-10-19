@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="{{ url_for('static',filename='img/pop_title_icon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='libs/bootstrap/dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" type="text/css"/>
+    <script src="{{ url_for('static',filename='js/history.js') }}"></script>
+    <script src="{{ url_for('static',filename='libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+</head>
+<body>
+{#<div class="container-fluid">#}
+<div class="container">
+
+    <h2>{% block head %}{% endblock %}</h2>
+    {% block body %}{% endblock %}
+</div>
+</body>
+</html>

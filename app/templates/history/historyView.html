@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}History 내역{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info" role="alert"><b>{{ param.svnurl }}</b></div>
+        </div>
+    </div>
+    <form id="svnform" method="GET" action="" class="form-inline">
+        <div class="col-md-12" style="padding-bottom: 20px">
+            <div class="pull-left">
+
+                <div class="form-group">
+                    <label for="frev">USER ID:</label>
+                    <input type="text" class="form-control" name="svnid" placeholder="ID"
+                           value="{{ param.svnid if param.svnid != None }}">
+                    <input type="hidden" name="flag" value="">
+                    <input type="hidden" name="offset" value="{{ param.offset }}">
+                </div>
+                <button type="submit" class="btn btn-default">Search</button>
+                <a class="btn btn-sm btn-link" onclick="javascript:document.forms[0].elements['svnid'].value='khjini3'">
+                    khjini3(김현진)
+                </a>
+                <a class="btn btn-sm btn-link" onclick="javascript:document.forms[0].elements['svnid'].value='kim13'">
+                    kim13(김대환)
+                </a>
+            </div>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-default"
+                        onclick="javascript:document.forms[0].elements['flag'].value='p'">이전
+                </button>
+                <button type="submit" class="btn btn-default"
+                        onclick="javascript:document.forms[0].elements['flag'].value='n'">다음
+                </button>
+                <a class="btn btn-sm btn-danger" href="{{ url_for('.historyListView') }}">
+                    <span class="glyphicon glyphicon-list"> SVN List</span>
+                </a>
+            </div>
+    </form>
+    </div>
+    {% for item in data %}
+        <div class="row">
+            <div class="col-md-12" style="padding-bottom: 5px;">
+                <span class="label label-danger">리비전 : {{ item['revision'] }}</span>
+                <span class="label label-primary button"
+                      onclick="javascript:document.forms[0].elements['svnid'].value='{{ item['svnid'] }}'">ID :
+                              {{ item['svnid'] }}
+                </span>
+                <span class=" label label-success">시간 : {{ item['date'] }}</span>
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <!-- Default panel contents -->
+            <div class="panel-heading">{{ item['comment']|nl2br }}</div>
+
+            <div class="panel-body">
+                {% for files in item['paths'] %}
+                    {% if loop.first %}
+
+                        <p class="text-warning">
+                            {% if files['action'] == 'A' %}
+                                <span class="label label-primary">
+                            {% elif files['action'] == 'M' %}
+                                <span class="label label-info">
+                            {% elif files['action'] == 'D' %}
+                                <span class="label label-danger">
+                            {% endif %}
+                            {{ files['action'] }}
+                            </span>
+                            &nbsp;
+                            {% set last_slash = files['file'].rindex('/') %}
+                            {{ (files['file'][:last_slash + 1] + '<b>' + files['file'][last_slash + 1:] + '</b>') | safe }}
+                        </p>
+                    {% endif %}
+                    <p>
+                        {{ files['diff']|safe }}
+                    </p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
